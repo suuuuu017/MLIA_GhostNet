@@ -9,7 +9,7 @@ import os
 
 rootdir = '/Users/suuuuu017/PycharmProjects/Efficient-AI-Backbones-master/ghostnet_pytorch/Classification_data'
 
-datadir = '/Users/suuuuu017/PycharmProjects/Efficient-AI-Backbones-master/ghostnet_pytorch/data/'
+datadir = '/Users/suuuuu017/PycharmProjects/Efficient-AI-Backbones-master/ghostnet_pytorch/data'
 subdir = ['train/', 'val/']
 subsubdir = ['Diseased/', 'Healthy/']
 
@@ -28,17 +28,8 @@ for subdir, dirs, files in os.walk(rootdir):
             # print(os.path.join(subdir, file))
             itk_image = sitk.ReadImage(os.path.join(subdir, file))
             image_array = np.array(sitk.GetArrayViewFromImage(itk_image))
-            # sitk.WriteImage(image_array, os.path.join(datadir, subdir[subI], subsubdir[subsubI]))
-            path = os.path.join(datadir, subdir[subI], subsubdir[subsubI], file[:-4])
-            # path = os.path.join(datadir, subdir[subI])
-            # print(path)
-            # path = os.path.join(path, subsubdir[subsubI])
-            # print(path)
-            # path = os.path.join(path, file[:-4])
-            # print(path)
+            path = os.path.join(datadir, subdir[subI], subsubdir[subsubI])
             if not (os.path.exists(path)):
-                # create the directory you want to save to
-                # os.mkdir(path)
                 np.save(path, image_array)
     subI = (subI + 1) % 2
     subsubI = (subsubI + 1) % 2
