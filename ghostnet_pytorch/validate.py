@@ -1,9 +1,7 @@
 # 2020.06.09-Changed for main script for testing GhostNet on ImageNet
 #            Huawei Technologies Co., Ltd. <foss@huawei.com>
 """PyTorch Inference Script
-
 An example inference script that outputs top-k class ids for images in a folder into a csv.
-
 Hacked together by Ross Wightman (https://github.com/rwightman)
 """
 import os
@@ -45,17 +43,15 @@ def main():
     model = ghostnet(num_classes=args.num_classes, width=args.width, dropout=args.dropout)
     model.load_state_dict(torch.load('./models/state_dict_73.98.pth'))
 
-    # if args.num_gpu > 1:
-    #     model = torch.nn.DataParallel(model, device_ids=list(range(args.num_gpu))).cuda()
-    # elif args.num_gpu < 1:
-    #     model = model
-    # else:
-    #     model = model.cuda()
-    model = model
+    if args.num_gpu > 1:
+        model = torch.nn.DataParallel(model, device_ids=list(range(args.num_gpu))).cuda()
+    elif args.num_gpu < 1:
+        model = model
+    else:
+        model = model.cuda()
     print('GhostNet created.')
     
     valdir = os.path.join(args.data, 'val')
-    print(valdir)
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                           std=[0.229, 0.224, 0.225])
     loader = torch.utils.data.DataLoader(
@@ -86,11 +82,11 @@ def validate(model, loader, loss_fn, args, log_suffix=''):
     end = time.time()
     last_idx = len(loader) - 1
     with torch.no_grad():
-
         for batch_idx, (input, target) in enumerate(loader):
             last_batch = batch_idx == last_idx
-            input = input
-            target = target
+            input = input.cuda()
+            target = target.cuda()
+
             output = model(input)
             if isinstance(output, (tuple, list)):
                 output = output[0]
@@ -100,7 +96,7 @@ def validate(model, loader, loss_fn, args, log_suffix=''):
 
             reduced_loss = loss.data
 
-            # torch.cuda.synchronize()
+            torch.cuda.synchronize()
 
             losses_m.update(reduced_loss.item(), input.size(0))
             top1_m.update(acc1.item(), output.size(0))
@@ -148,7 +144,7 @@ def accuracy(output, target, topk=(1,)):
     batch_size = target.size(0)
     _, pred = output.topk(maxk, 1, True, True)
     pred = pred.t()
-    correct = pred.eq(target.view(1, -1).expand_as(pred))
+    correct = pred.eq(target.reshape(1, -1).expand_as(pred))
     return [correct[:k].reshape(-1).float().sum(0) * 100. / batch_size for k in topk]
 
 
