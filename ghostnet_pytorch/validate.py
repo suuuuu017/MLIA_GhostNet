@@ -19,11 +19,11 @@ from ghostnet import ghostnet
 torch.backends.cudnn.benchmark = True
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Inference')
-parser.add_argument('--data', metavar='DIR', default='/cache/data/imagenet/',
+parser.add_argument('--data', metavar='DIR', default='/home/qvw9pv/MLIA_GhostNet/ghostnet_pytorch/data',
                     help='path to dataset')
-parser.add_argument('--output_dir', metavar='DIR', default='/cache/models/',
+parser.add_argument('--output_dir', metavar='DIR', default='/home/qvw9pv/MLIA_GhostNet/ghostnet_pytorch/models',
                     help='path to output files')
-parser.add_argument('-j', '--workers', default=4, type=int, metavar='N',
+parser.add_argument('-j', '--workers', default=1, type=int, metavar='N',
                     help='number of data loading workers (default: 2)')
 parser.add_argument('-b', '--batch-size', default=256, type=int,
                     metavar='N', help='mini-batch size (default: 256)')
@@ -41,7 +41,7 @@ def main():
     args = parser.parse_args()
 
     model = ghostnet(num_classes=args.num_classes, width=args.width, dropout=args.dropout)
-    model.load_state_dict(torch.load('./models/state_dict_73.98.pth'))
+    model.load_state_dict(torch.load('./models/model_weights.pth'), strict=False)
 
     if args.num_gpu > 1:
         model = torch.nn.DataParallel(model, device_ids=list(range(args.num_gpu))).cuda()
@@ -92,7 +92,7 @@ def validate(model, loader, loss_fn, args, log_suffix=''):
                 output = output[0]
 
             loss = loss_fn(output, target)
-            acc1, acc5 = accuracy(output, target, topk=(1, 5))
+            acc1, acc5 = accuracy(output, target, topk=(1, 2))
 
             reduced_loss = loss.data
 

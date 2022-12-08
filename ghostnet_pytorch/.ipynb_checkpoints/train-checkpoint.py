@@ -18,6 +18,7 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 from ghostnet import ghostnet
 import torch.optim as optim
+from tqdm import tqdm
 
 criterion = nn.CrossEntropyLoss()
 
@@ -25,11 +26,11 @@ criterion = nn.CrossEntropyLoss()
 torch.backends.cudnn.benchmark = True
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Inference')
-parser.add_argument('--data', metavar='DIR', default='/cache/data/imagenet/',
+parser.add_argument('--data', metavar='DIR', default='/home/qvw9pv/MLIA_GhostNet/ghostnet_pytorch/data',
                     help='path to dataset')
-parser.add_argument('--output_dir', metavar='DIR', default='/cache/models/',
+parser.add_argument('--output_dir', metavar='DIR', default='/home/qvw9pv/MLIA_GhostNet/ghostnet_pytorch/models',
                     help='path to output files')
-parser.add_argument('-j', '--workers', default=4, type=int, metavar='N',
+parser.add_argument('-j', '--workers', default=1, type=int, metavar='N',
                     help='number of data loading workers (default: 2)')
 parser.add_argument('-b', '--batch-size', default=256, type=int,
                     metavar='N', help='mini-batch size (default: 256)')
@@ -83,7 +84,7 @@ def main():
 
 def train(trainloader, net):
     optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
-    for epoch in range(2):  # loop over the dataset multiple times
+    for epoch in tqdm(range(200)):  # loop over the dataset multiple times
         running_loss = 0.0
         for i, data in enumerate(trainloader, 0):
             # get the inputs; data is a list of [inputs, labels]
