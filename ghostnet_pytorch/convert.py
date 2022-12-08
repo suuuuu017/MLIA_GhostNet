@@ -9,10 +9,10 @@ from PIL import Image
 #         print(os.path.join("/mydir", file))
 
 #rootdir = '/Users/suuuuu017/PycharmProjects/Efficient-AI-Backbones-master/ghostnet_pytorch/Classification_data'
-rootdir = '/home/bt3qzd/MLIA_GhostNet/ghostnet_pytorch/Classification_data'
+rootdir = '/home/qvw9pv/MLIA_GhostNet/ghostnet_pytorch/Classification_data'
 
 #datadir = '/Users/suuuuu017/PycharmProjects/Efficient-AI-Backbones-master/ghostnet_pytorch/data'
-datadir = '/home/bt3qzd/MLIA_GhostNet/ghostnet_pytorch/data/'
+datadir = '/home/qvw9pv/MLIA_GhostNet/ghostnet_pytorch/data/'
 subdirarr = ['train/', 'val/']
 subsubdir = ['Diseased/', 'Healthy/']
 

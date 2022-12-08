@@ -144,7 +144,11 @@ def accuracy(output, target, topk=(1,)):
     batch_size = target.size(0)
     _, pred = output.topk(maxk, 1, True, True)
     pred = pred.t()
-    correct = pred.eq(target.reshape(1, -1).expand_as(pred))
+    
+    correct = pred.eq(target.view(1, -1).expand_as(pred))
+#     print([correct[:k]. for k in topk])
+    print(topk)
+    print([correct[:k].shape for k in topk])
     return [correct[:k].reshape(-1).float().sum(0) * 100. / batch_size for k in topk]
 
 
