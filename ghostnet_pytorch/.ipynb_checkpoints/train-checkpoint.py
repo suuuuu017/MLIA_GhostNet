@@ -101,11 +101,11 @@ def train(trainloader, net):
 
             # print statistics
             running_loss += loss.item()
-            if i % 2000 == 1999:  # print every 2000 mini-batches
+            if i % 10 == 9:  # print every 2000 mini-batches
                 print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / 2000:.3f}')
                 running_loss = 0.0
 
-    torch.save(net.state_dict(), 'model_weights.pth')
+    torch.save(net.state_dict(), 'model_weights_try.pth')
     print('Finished Training')
 
 def validate(model, loader, loss_fn, args, log_suffix=''):
