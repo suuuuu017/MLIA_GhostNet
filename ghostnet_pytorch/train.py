@@ -105,7 +105,7 @@ def train(trainloader, net):
                 print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / 2000:.3f}')
                 running_loss = 0.0
 
-    torch.save(net.state_dict(), 'model_weights_try.pth')
+    torch.save(net.state_dict(), 'model_weights.pth')
     print('Finished Training')
 
 def validate(model, loader, loss_fn, args, log_suffix=''):
