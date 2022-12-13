@@ -20,10 +20,10 @@ module load nvompic
 module load goolfc
 
 ### Usage
-Run `python train.py` to train using `train` set.
-Run `python validate.py` to evaluate on `val` set.
+Run `singularity run --nv $CONTAINERDIR/pytorch-1.8.1.sif train.py --data path/to/data` to train using `train` set.
+Run `singularity run --nv $CONTAINERDIR/pytorch-1.8.1.sif validate.py --data path/to/data` to evaluate on `val` set.
 
-You'll get the accuracy: top-1 acc=`0.74`
+You'll get the accuracy: top-1 acc=`74.0`
 
 ### Data Preparation
 Data dir should have the following structure:
